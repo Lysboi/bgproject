@@ -1,0 +1,6 @@
+Bu klasörde platform resimleri yer alacak:
+- uwufufu.jpg
+- geoguessr.jpg
+
+Not: Şu an için bu resimler mevcut değil. Gerçek resimler daha sonra eklenecek.
+Geçici olarak, platformlar varsayılan bir resim gösterecek şekilde düzenlenecek. 

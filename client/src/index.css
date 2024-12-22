@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    font-family: 'Inter var', ui-sans-serif, system-ui, -apple-system;
+    line-height: 1.5;
+    font-weight: 400;
+    
+    color-scheme: dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: theme('colors.dark.950');
+    
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply min-h-screen bg-dark-950 relative overflow-x-hidden;
+  }
+
+  body::before {
+    content: '';
+    @apply fixed inset-0 bg-dot-pattern bg-dot opacity-50;
+  }
+
+  body::after {
+    content: '';
+    @apply fixed inset-0 bg-gradient-fade opacity-100;
+  }
+}
+
+@layer components {
+  .platform-card {
+    @apply relative overflow-hidden rounded-3xl bg-dark-800/90 border border-dark-600
+           transition-all duration-700 hover:scale-[1.03] hover:-translate-y-2
+           hover:border-brand-500/50 hover:shadow-glow backdrop-blur-sm
+           aspect-[3/4] mt-6 cursor-pointer;
+  }
+
+  .platform-card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-t from-dark-800 via-dark-800/95 to-transparent
+           transition-opacity duration-700 opacity-80 group-hover:opacity-70;
+  }
+
+  .platform-card::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-brand-500/0 to-brand-500/10
+           opacity-0 transition-all duration-700 group-hover:opacity-100
+           group-hover:backdrop-blur-sm;
+  }
+
+  .platform-card-bg {
+    @apply absolute inset-0 w-full h-full opacity-30 transition-all duration-700
+           group-hover:opacity-50 group-hover:scale-110;
+  }
+
+  .platform-card-bg img {
+    @apply w-full h-full object-cover object-center transition-transform duration-700
+           group-hover:scale-110;
+  }
+
+  .platform-card-content {
+    @apply relative z-10 p-6 flex flex-col h-full transition-transform duration-700
+           group-hover:translate-y-2;
+  }
+
+  .platform-badge {
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium
+           bg-brand-500/20 text-white border border-brand-500/30
+           transition-all duration-300 group-hover:bg-brand-500/30
+           group-hover:border-brand-500/50 group-hover:shadow-glow;
+  }
+
+  .platform-logo {
+    @apply absolute left-1/2 -translate-x-1/2 -translate-y-[10%] z-20 
+           transition-all duration-700 w-[33%];
+  }
+
+  .platform-logo img {
+    @apply w-full h-auto object-contain transition-all duration-700 drop-shadow-2xl
+           group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)];
+  }
+
+  .platform-description {
+    @apply text-white/90 text-lg leading-relaxed font-medium
+           transition-all duration-300 group-hover:text-white;
+  }
+
+  .platform-button {
+    @apply flex items-center justify-center w-full py-3 px-6
+           bg-gradient-to-r from-brand-600/80 to-brand-500/80 text-white 
+           rounded-xl border border-brand-500/30 shadow-lg
+           transition-all duration-300 group-hover:from-brand-500 
+           group-hover:to-brand-400 group-hover:border-brand-400/50 
+           group-hover:shadow-glow group-hover:translate-y-1
+           relative overflow-hidden;
+  }
+
+  .platform-button::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
+           -translate-x-full group-hover:translate-x-full transition-transform duration-1000;
+  }
+
+  .platform-arrow {
+    @apply transition-all duration-300 group-hover:translate-x-1;
+  }
+
+  .btn-primary {
+    @apply px-6 py-2.5 rounded-xl bg-brand-600 text-white font-medium
+           transition-all duration-300 hover:bg-brand-700 hover:shadow-glow
+           disabled:opacity-50 disabled:cursor-not-allowed
+           hover:scale-105 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-2.5 rounded-xl bg-dark-800 text-white font-medium
+           border border-dark-600 transition-all duration-300
+           hover:bg-dark-700 hover:border-brand-500/30
+           disabled:opacity-50 disabled:cursor-not-allowed
+           hover:scale-105 active:scale-95;
+  }
+}
