@@ -6,10 +6,17 @@ import { getCurrentUser } from '../services/authService';
 // Profil görselleri için renk eşleştirmeleri
 const profileColors: { [key: string]: string } = {
   '/images/profile-icons/ppdefault.png': '#733d8b',
-  '/images/profile-icons/ppicon1.png': '#6da3c2',
-  '/images/profile-icons/ppicon2.png': '#b41e22',
-  '/images/profile-icons/ppicon3.png': '#f1cb33',
+  '/images/profile-icons/ppicon1.png': '#ebd4bd',
+  '/images/profile-icons/ppicon2.png': '#ee181c',
+  '/images/profile-icons/ppicon3.png': '#00cdf7',
   '/images/profile-icons/ppicon4.png': '#65d046',
+  '/images/profile-icons/ppicon5.png': '#f79e51',
+  '/images/profile-icons/ppicon6.png': '#c3c4c4',
+  '/images/profile-icons/ppicon7.png': '#996b4d',
+  '/images/profile-icons/ppicon8.png': '#f3a9b9',
+  '/images/profile-icons/ppicon9.png': '#d31b6c',
+  '/images/profile-icons/ppicon10.png': '#fbda3f',
+  '/images/profile-icons/ppicon11.png': '#ffffff',
 };
 
 interface NavigationButtonProps {

@@ -1,14 +1,19 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, AppBar, Toolbar, Button, Container, Box } from '@mui/material';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import NavigationButton from './components/NavigationButton';
 import ThisOrThat from './pages/ThisOrThat';
 import ShinyNotes from './pages/ShinyNotes';
 import Locato from './pages/Locato';
 import PageTransition from './components/PageTransition';
 import HeaderLogo from './components/HeaderLogo';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import { getCurrentUser } from './services/authService';
+import UserMenu from './components/UserMenu';
+import Profile from './pages/Profile';
 
 // Koyu tema oluşturma
 const darkTheme = createTheme({
@@ -51,6 +56,8 @@ const navigationButtons = [
 
 function AppHeader() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const user = getCurrentUser();
   const isThisOrThatPage = location.pathname === '/thisorthat';
   const isShinyNotesPage = location.pathname === '/shinynotes';
   const isLocatoPage = location.pathname === '/locato';
@@ -116,12 +123,36 @@ function AppHeader() {
             </>
           )}
         </Box>
-        <Button color="inherit" variant="outlined" sx={{ mr: 2 }}>
-          Giriş Yap
-        </Button>
-        <Button color="primary" variant="contained">
-          Kayıt Ol
-        </Button>
+        
+        <AnimatePresence mode="wait">
+          {user ? (
+            <UserMenu key="user-menu" user={user} />
+          ) : (
+            <motion.div
+              key="auth-buttons"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.2 }}
+              style={{ display: 'flex', gap: '1rem' }}
+            >
+              <Button 
+                color="inherit" 
+                variant="outlined" 
+                onClick={() => navigate('/login')}
+              >
+                Giriş Yap
+              </Button>
+              <Button 
+                color="primary" 
+                variant="contained"
+                onClick={() => navigate('/register')}
+              >
+                Kayıt Ol
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Toolbar>
     </AppBar>
   );
@@ -153,6 +184,21 @@ function AppContent() {
         <Route path="/thisorthat" element={<ThisOrThat />} />
         <Route path="/shinynotes" element={<ShinyNotes />} />
         <Route path="/locato" element={<Locato />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={
+          <PageTransition>
+            <Profile />
+          </PageTransition>
+        } />
+        <Route path="/settings" element={
+          <PageTransition>
+            <div style={{ padding: '2rem' }}>
+              <h1>Ayarlar</h1>
+              <p>Bu sayfa yakında kullanıma açılacak.</p>
+            </div>
+          </PageTransition>
+        } />
       </Routes>
     </AnimatePresence>
   );

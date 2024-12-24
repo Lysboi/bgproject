@@ -11,7 +11,7 @@ BoredGap, çeşitli web tabanlı eğlence platformlarını bir araya getiren int
 Coğrafi bilginizi test eden, harita üzerinde yer tahmin etme oyunu.
 
 ### 📝 Shiny Notes
-Notlarınızı tutabileceğiniz, düzenleyebileceğiniz ve paylaşabileceğiniz bir platform.
+Yıldızlara notlar yazıp uzaya gönderebileceğiniz ve diğer kullanıcıların yıldızlarındaki notları okuyabileceğiniz bir platform.
 
 ## 🚀 Özellikler
 
@@ -128,12 +128,12 @@ boredgap/
 - **Metin Rengi**: Beyaz ve gri tonları
 
 ## 🔜 Gelecek Özellikler
-- [ ] This or That için yeni soru setleri
-- [ ] Locato için yeni haritalar
-- [ ] Shiny Notes için paylaşım özellikleri
+- [ ] This or That için arayüz
+- [ ] Locato için arayüz
+- [ ] Shiny Notes için yıldızlı uzay sistemi ve arayüz
 - [ ] Kullanıcı skorları ve sıralamaları
 - [ ] Platform başarı rozetleri
-- [ ] Arkadaş sistemi
+- [ ] Arkadaş, takip, beğeni sistemi
 - [ ] Çoklu dil desteği
 
 ## 🛠️ Kurulum

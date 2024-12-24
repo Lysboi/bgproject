@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-const API_URL = process.env.NODE_ENV === 'production' 
-  ? '/api/users'  // Production'da aynı domain'den servis edileceği için
-  : 'http://localhost:5001/api/users'; // Development ortamında yeni port
+// API URL'ini tanımla
+const API_URL = 'http://localhost:5000/api/users';
 
 interface RegisterData {
   username: string;
@@ -66,21 +65,36 @@ export const getToken = (): string | null => {
 // Profil resmini güncelleme
 export const updateProfileImage = async (profileImage: string): Promise<any> => {
   const token = getToken();
-  const response = await axios.put(
-    `${API_URL}/profile-image`,
-    { profileImage },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
   
-  if (response.data.success) {
-    const currentUser = getCurrentUser();
-    const updatedUser = { ...currentUser, profileImage };
-    localStorage.setItem('user', JSON.stringify(updatedUser));
+  if (!token) {
+    throw new Error('Oturum süresi dolmuş. Lütfen tekrar giriş yapın.');
   }
-  
-  return response.data;
+
+  try {
+    const response = await axios.put(
+      `${API_URL}/profile-image`,
+      { profileImage },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    
+    if (response.data.success) {
+      const currentUser = getCurrentUser();
+      const updatedUser = { ...currentUser, profileImage };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    }
+    
+    return response.data;
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      // Token geçersiz veya süresi dolmuş
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      throw new Error('Oturum süresi dolmuş. Lütfen tekrar giriş yapın.');
+    }
+    throw error;
+  }
 }; 

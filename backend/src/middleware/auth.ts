@@ -1,31 +1,59 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import User, { IUser } from '../models/User';
+import User from '../models/User';
 
-interface AuthRequest extends Request {
-  user?: IUser;
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+
+interface JwtPayload {
+  id: string;
 }
 
-export const auth = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string;
+      };
+    }
+  }
+}
+
+export const protect = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    let token;
+
+    if (req.headers.authorization?.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
 
     if (!token) {
-      res.status(401).json({ message: 'Please authenticate' });
-      return;
+      return res.status(401).json({
+        success: false,
+        message: 'Yetkilendirme token\'ı bulunamadı',
+      });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
-    const user = await User.findById(decoded.id);
+    // Token doğrulama
+    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
 
+    // Kullanıcı kontrolü
+    const user = await User.findById(decoded.id).select('-password');
     if (!user) {
-      res.status(401).json({ message: 'Please authenticate' });
-      return;
+      return res.status(401).json({
+        success: false,
+        message: 'Geçersiz token',
+      });
     }
 
-    req.user = user;
+    req.user = {
+      id: user._id.toString(),
+    };
+
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Please authenticate' });
+    res.status(401).json({
+      success: false,
+      message: 'Yetkilendirme başarısız',
+    });
   }
 }; 

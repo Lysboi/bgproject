@@ -1,45 +1,46 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-export interface IUser extends mongoose.Document {
+export interface IUser extends Document {
+  _id: mongoose.Types.ObjectId;
   username: string;
   email: string;
   password: string;
-  createdAt: Date;
+  profileImage: string;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: [true, 'Username is required'],
+    required: [true, 'Kullanıcı adı zorunludur'],
     unique: true,
     trim: true,
-    minlength: [3, 'Username must be at least 3 characters long']
   },
   email: {
     type: String,
-    required: [true, 'Email is required'],
+    required: [true, 'Email zorunludur'],
     unique: true,
     trim: true,
     lowercase: true,
-    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
   },
   password: {
     type: String,
-    required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters long']
+    required: [true, 'Şifre zorunludur'],
+    minlength: [6, 'Şifre en az 6 karakter olmalıdır'],
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  profileImage: {
+    type: String,
+    default: '/images/profile-icons/ppdefault.png',
   }
+}, {
+  timestamps: true
 });
 
-// Password hash middleware
+// Şifreyi hashleme
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
-
+  
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
@@ -49,7 +50,7 @@ userSchema.pre('save', async function(next) {
   }
 });
 
-// Password comparison method
+// Şifre karşılaştırma metodu
 userSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
   try {
     return await bcrypt.compare(candidatePassword, this.password);
