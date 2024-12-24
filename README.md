@@ -10,7 +10,7 @@ BoredGap, çeşitli web tabanlı eğlence platformlarını bir araya getiren int
 ### 📍 Locato
 Coğrafi bilginizi test eden, harita üzerinde yer tahmin etme oyunu.
 
-### 📝 Shiny Notes
+### ⭐ Shiny Notes
 Yıldızlara notlar yazıp uzaya gönderebileceğiniz ve diğer kullanıcıların yıldızlarındaki notları okuyabileceğiniz bir platform.
 
 ## 🚀 Özellikler
@@ -23,10 +23,10 @@ Yıldızlara notlar yazıp uzaya gönderebileceğiniz ve diğer kullanıcıları
   - Oturum yönetimi
 
 - **Profil Sistemi**
-  - Özelleştirilebilir profil görselleri
+  - 12 farklı özelleştirilebilir profil görseli
   - Her profil görseli için özel renk teması
-  - Profil bilgilerini düzenleme
-  - Profil resmi seçim dialogu
+  - Profil bilgilerini görüntüleme
+  - Kolay profil resmi değiştirme
 
 ### 🎨 Arayüz Özellikleri
 - **Modern Tasarım**
@@ -39,7 +39,7 @@ Yıldızlara notlar yazıp uzaya gönderebileceğiniz ve diğer kullanıcıları
   - Dinamik kullanıcı menüsü
   - Özelleştirilmiş profil görseli gösterimi
   - Platform seçim menüsü
-  - Kolay erişilebilir menü öğeleri
+  - Animasyonlu hover efektleri
 
 ### 🛠️ Teknik Özellikler
 - **Frontend**
@@ -63,24 +63,39 @@ Yıldızlara notlar yazıp uzaya gönderebileceğiniz ve diğer kullanıcıları
 boredgap/
 ├── frontend/
 │   ├── public/
-│   │   └── images/
-│   │       └── profile-icons/    # Profil görselleri
+│   │   ├── images/ # Platform logoları
+│   │   │   └── profile-icons/    # Profil görselleri (12 adet)
+│   │   └── index.html
 │   └── src/
 │       ├── components/           # UI bileşenleri
+│       │   ├── HeaderLogo.tsx    # Logo bileşeni
+│       │   ├── NavigationButton.tsx  # Platform butonları
+│       │   ├── PageTransition.tsx    # Sayfa geçiş animasyonları
+│       │   └── UserMenu.tsx      # Kullanıcı menüsü
 │       ├── pages/               # Platform sayfaları
 │       │   ├── ThisOrThat.tsx   # This or That platformu
 │       │   ├── Locato.tsx      # Locato platformu
-│       │   └── ShinyNotes.tsx  # Shiny Notes platformu
+│       │   ├── ShinyNotes.tsx  # Shiny Notes platformu
+│       │   ├── Profile.tsx     # Profil sayfası
+│       │   ├── Login.tsx       # Giriş sayfası
+│       │   └── Register.tsx    # Kayıt sayfası
 │       ├── services/            # API servisleri
+│       │   └── authService.ts   # Kimlik doğrulama servisi
 │       └── styles/              # CSS dosyaları
+│           └── Auth.css         # Kimlik doğrulama stilleri
 │
 └── backend/
     ├── src/
     │   ├── controllers/         # İş mantığı
+    │   │   └── userController.ts  # Kullanıcı işlemleri
     │   ├── models/             # Veritabanı modelleri
+    │   │   └── User.ts         # Kullanıcı modeli
     │   ├── routes/             # API rotaları
+    │   │   └── userRoutes.ts   # Kullanıcı rotaları
     │   └── middleware/         # Ara yazılımlar
+    │       └── auth.ts         # Kimlik doğrulama
     └── config/                 # Yapılandırma dosyaları
+        └── .env               # Ortam değişkenleri
 ```
 
 ## 🎯 Tamamlanan Özellikler
@@ -88,17 +103,17 @@ boredgap/
 ### Platform Özellikleri
 - [x] Ana sayfa tasarımı
 - [x] Platform yönlendirmeleri
-- [x] This or That temel yapısı
-- [x] Locato temel yapısı
-- [x] Shiny Notes temel yapısı
+- [x] Platform butonları ve animasyonları
+- [x] Platform logoları
 
 ### Kullanıcı Arayüzü
 - [x] Koyu tema tasarımı
 - [x] Responsive header tasarımı
 - [x] Kullanıcı menüsü animasyonları
 - [x] Profil sayfası tasarımı
-- [x] Profil resmi seçim dialogu
+- [x] 12 farklı profil ikonu
 - [x] Özel renk temalı profil görselleri
+- [x] Animasyonlu buton efektleri
 
 ### Kimlik Doğrulama
 - [x] Kayıt olma sistemi
@@ -108,7 +123,7 @@ boredgap/
 - [x] Güvenli çıkış yapma
 
 ### Profil Yönetimi
-- [x] Profil resmi seçme
+- [x] Profil resmi seçme ve değiştirme
 - [x] Profil bilgilerini görüntüleme
 - [x] Özel renk temalı profil görselleri
 - [x] Profil resmi güncelleme
@@ -117,13 +132,21 @@ boredgap/
 
 ### Profil Görselleri Renk Şeması
 - **Default (Mor)**: `#733d8b`
-- **İkon 1 (Mavi)**: `#6da3c2`
-- **İkon 2 (Kırmızı)**: `#b41e22`
-- **İkon 3 (Sarı)**: `#f1cb33`
+- **İkon 1 (Bej)**: `#ebd4bd`
+- **İkon 2 (Kırmızı)**: `#ee181c`
+- **İkon 3 (Mavi)**: `#00cdf7`
 - **İkon 4 (Yeşil)**: `#65d046`
+- **İkon 5 (Turuncu)**: `#f79e51`
+- **İkon 6 (Gri)**: `#c3c4c4`
+- **İkon 7 (Kahve)**: `#996b4d`
+- **İkon 8 (Pembe)**: `#f3a9b9`
+- **İkon 9 (Fuşya)**: `#d31b6c`
+- **İkon 10 (Sarı)**: `#fbda3f`
+- **İkon 11 (Beyaz)**: `#ffffff`
 
 ### Arayüz Renkleri
-- **Arka Plan**: Koyu tema
+- **Arka Plan**: Koyu tema (`#121212`)
+- **Kart Arka Planı**: Yarı saydam siyah (`rgba(30, 30, 30, 0.95)`)
 - **Vurgu Rengi**: Profil görseline göre dinamik
 - **Metin Rengi**: Beyaz ve gri tonları
 
@@ -164,7 +187,7 @@ npm run dev
 5. Frontend'i başlatın
 ```bash
 cd frontend
-npm start
+npm run dev
 ```
 
 ## 🤝 Katkıda Bulunma
