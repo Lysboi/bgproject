@@ -14,6 +14,9 @@ import Register from './pages/Register';
 import { getCurrentUser } from './services/authService';
 import UserMenu from './components/UserMenu';
 import Profile from './pages/Profile';
+import CreateBattle from './pages/CreateBattle';
+import BattlePage from './pages/BattlePage';
+import PlayBattle from './pages/PlayBattle';
 
 // Koyu tema oluşturma
 const darkTheme = createTheme({
@@ -199,6 +202,13 @@ function AppContent() {
             </div>
           </PageTransition>
         } />
+        <Route path="/thisorthat/create" element={
+          <PageTransition>
+            <CreateBattle />
+          </PageTransition>
+        } />
+        <Route path="/thisorthat/:id" element={<BattlePage />} />
+        <Route path="/thisorthat/:id/play" element={<PlayBattle />} />
       </Routes>
     </AnimatePresence>
   );

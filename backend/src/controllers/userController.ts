@@ -1,14 +1,27 @@
 import { Request, Response } from 'express';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User, { IUser } from '../models/User';
+import User from '../models/User';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+// JWT gizli anahtarını al
+const JWT_SECRET = process.env.JWT_SECRET;
 
-// JWT token oluşturma
-const generateToken = (userId: string) => {
-  return jwt.sign({ id: userId }, JWT_SECRET, {
-    expiresIn: '30d',
+if (!JWT_SECRET) {
+  console.error('JWT_SECRET is not defined in environment variables!');
+  process.exit(1);
+}
+
+// Token oluşturma fonksiyonu
+const generateToken = (id: string) => {
+  console.log('Generating token for user:', id);
+  console.log('Using JWT_SECRET:', JWT_SECRET);
+  
+  const token = jwt.sign({ id }, JWT_SECRET, {
+    expiresIn: '30d'
   });
+  
+  console.log('Generated token:', token);
+  return token;
 };
 
 // Kayıt olma
@@ -16,23 +29,30 @@ export const register = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
 
-    // Kullanıcı kontrolü
-    const userExists = await User.findOne({ $or: [{ email }, { username }] });
+    // Kullanıcı adı veya email kontrolü
+    const userExists = await User.findOne({
+      $or: [{ username }, { email }]
+    });
+
     if (userExists) {
       return res.status(400).json({
         success: false,
-        message: 'Bu email veya kullanıcı adı zaten kullanılıyor',
+        message: 'Bu kullanıcı adı veya email zaten kullanılıyor'
       });
     }
 
-    // Yeni kullanıcı oluşturma
-    const user: IUser = await User.create({
+    // Şifreyi hashle
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Kullanıcıyı oluştur
+    const user = await User.create({
       username,
       email,
-      password,
+      password: hashedPassword
     });
 
-    // Token oluşturma
+    // Token oluştur
     const token = generateToken(user._id.toString());
 
     res.status(201).json({
@@ -41,14 +61,13 @@ export const register = async (req: Request, res: Response) => {
       user: {
         id: user._id,
         username: user.username,
-        email: user.email,
-        profileImage: user.profileImage,
-      },
+        email: user.email
+      }
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: error.message || 'Bir hata oluştu',
+      message: error.message
     });
   }
 };
@@ -58,8 +77,8 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { emailOrUsername, password } = req.body;
 
-    // Kullanıcı kontrolü (email veya username ile)
-    const user: IUser | null = await User.findOne({
+    // Kullanıcıyı bul
+    const user = await User.findOne({
       $or: [
         { email: emailOrUsername },
         { username: emailOrUsername }
@@ -69,20 +88,20 @@ export const login = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Geçersiz kullanıcı adı/email veya şifre',
+        message: 'Kullanıcı adı/email veya şifre hatalı'
       });
     }
 
-    // Şifre kontrolü
-    const isMatch = await user.comparePassword(password);
+    // Şifreyi kontrol et
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: 'Geçersiz kullanıcı adı/email veya şifre',
+        message: 'Kullanıcı adı/email veya şifre hatalı'
       });
     }
 
-    // Token oluşturma
+    // Token oluştur
     const token = generateToken(user._id.toString());
 
     res.json({
@@ -91,14 +110,13 @@ export const login = async (req: Request, res: Response) => {
       user: {
         id: user._id,
         username: user.username,
-        email: user.email,
-        profileImage: user.profileImage,
-      },
+        email: user.email
+      }
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: error.message || 'Bir hata oluştu',
+      message: error.message
     });
   }
 };
@@ -106,7 +124,7 @@ export const login = async (req: Request, res: Response) => {
 // Kullanıcı bilgilerini getirme
 export const getMe = async (req: Request, res: Response) => {
   try {
-    const user: IUser | null = await User.findById(req.user?.id).select('-password');
+    const user = await User.findById(req.user?.id).select('-password');
     if (!user) {
       return res.status(404).json({
         success: false,
