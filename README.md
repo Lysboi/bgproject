@@ -1,6 +1,17 @@
-# Blog Gaming Projesi
+# BoredGap
 
-Bu proje, oyun haberleri ve incelemeleri paylaşılan bir blog platformudur. Modern web teknolojileri kullanılarak geliştirilmiş, kullanıcı dostu bir arayüze sahiptir.
+BoredGap, çeşitli web tabanlı eğlence platformlarını bir araya getiren interaktif bir web sitesidir. Her platform, kendine özgü eğlence deneyimi sunar ve kullanıcılar ana sayfadan bu platformlara kolayca erişebilir.
+
+## 🎮 Platformlar
+
+### 🤔 This or That
+İki seçenek arasında seçim yapmanızı sağlayan, eğlenceli bir karar verme platformu.
+
+### 📍 Locato
+Coğrafi bilginizi test eden, harita üzerinde yer tahmin etme oyunu.
+
+### 📝 Shiny Notes
+Notlarınızı tutabileceğiniz, düzenleyebileceğiniz ve paylaşabileceğiniz bir platform.
 
 ## 🚀 Özellikler
 
@@ -27,6 +38,7 @@ Bu proje, oyun haberleri ve incelemeleri paylaşılan bir blog platformudur. Mod
 - **Header ve Navigasyon**
   - Dinamik kullanıcı menüsü
   - Özelleştirilmiş profil görseli gösterimi
+  - Platform seçim menüsü
   - Kolay erişilebilir menü öğeleri
 
 ### 🛠️ Teknik Özellikler
@@ -48,14 +60,17 @@ Bu proje, oyun haberleri ve incelemeleri paylaşılan bir blog platformudur. Mod
 ## 📦 Proje Yapısı
 
 ```
-blog-gaming/
+boredgap/
 ├── frontend/
 │   ├── public/
 │   │   └── images/
 │   │       └── profile-icons/    # Profil görselleri
 │   └── src/
 │       ├── components/           # UI bileşenleri
-│       ├── pages/               # Sayfa bileşenleri
+│       ├── pages/               # Platform sayfaları
+│       │   ├── ThisOrThat.tsx   # This or That platformu
+│       │   ├── Locato.tsx      # Locato platformu
+│       │   └── ShinyNotes.tsx  # Shiny Notes platformu
 │       ├── services/            # API servisleri
 │       └── styles/              # CSS dosyaları
 │
@@ -69,6 +84,13 @@ blog-gaming/
 ```
 
 ## 🎯 Tamamlanan Özellikler
+
+### Platform Özellikleri
+- [x] Ana sayfa tasarımı
+- [x] Platform yönlendirmeleri
+- [x] This or That temel yapısı
+- [x] Locato temel yapısı
+- [x] Shiny Notes temel yapısı
 
 ### Kullanıcı Arayüzü
 - [x] Koyu tema tasarımı
@@ -106,13 +128,13 @@ blog-gaming/
 - **Metin Rengi**: Beyaz ve gri tonları
 
 ## 🔜 Gelecek Özellikler
-- [ ] Blog yazıları için CRUD işlemleri
-- [ ] Yorum sistemi
-- [ ] Beğeni sistemi
-- [ ] Kullanıcı rolleri
-- [ ] Admin paneli
-- [ ] Gelişmiş profil düzenleme
-- [ ] Sosyal medya entegrasyonu
+- [ ] This or That için yeni soru setleri
+- [ ] Locato için yeni haritalar
+- [ ] Shiny Notes için paylaşım özellikleri
+- [ ] Kullanıcı skorları ve sıralamaları
+- [ ] Platform başarı rozetleri
+- [ ] Arkadaş sistemi
+- [ ] Çoklu dil desteği
 
 ## 🛠️ Kurulum
 
